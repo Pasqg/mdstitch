@@ -1,4 +1,4 @@
-# MD-Stitch
+# mdstitch
 
 A rust util to merge multiple markdown files into one.
 
@@ -70,6 +70,10 @@ detecting loops and throwing better warnings/errors.
 
 ### Stitching directive
 
-The stitching directive is by default `@mdstitch[/path/to/file]`. In case your markdown should contain
+The stitching directive is by default:
+
+`@mdstitch[/path/to/file]`
+
+In case your markdown should contain
 already strings such as `@mdstitch[...]`, or you just don't like to type that, the stitching directive can be customized
 with the flag `-d/--directive <PATTERN>`.
