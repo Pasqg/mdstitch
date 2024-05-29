@@ -16,7 +16,8 @@ path/to/markdown.md:
 
 ....
 
-@mdstitch["other/path/other.md"]
+@mdstitch[other/path/other.md]
+
 @mdstitch[another/path/another.md]
 
 ## Conclusion
@@ -47,9 +48,11 @@ result.md:
 ```
 # Title
 
+....
+
 ## Chapter 1
 
-A turtle walked slow in the woods.
+A turtle walked slowly in a foggy green wood.
 
 ## Chapter 2
 
@@ -58,6 +61,7 @@ The turtle found a berry and ate it with delight.
 ## Conclusion
 
 The turtle was very happy!
+
 ```
 
 ### Nested stitching
