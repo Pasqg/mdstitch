@@ -3,6 +3,7 @@ mod utils;
 
 use clap::Parser;
 use std::fs;
+use std::time::Instant;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -18,6 +19,7 @@ struct Cli {
 }
 
 fn main() {
+    let time = Instant::now();
     let cli = Cli::parse();
 
     let root_file = cli.root.as_str();
@@ -40,4 +42,5 @@ fn main() {
         Err(error) => eprintln!("Could not save output to file {}: {}", output_file, error),
         Ok(_) => println!("Saved to {}", cli.output)
     }
+    println!("Done in {:.2}s", time.elapsed().as_secs_f32());
 }
