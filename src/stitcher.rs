@@ -27,3 +27,35 @@ pub(crate) fn stitch(stitch_pattern: &str, index: &str) -> Option<String> {
     }
     Some(merged)
 }
+
+#[cfg(test)]
+mod tests {
+    use std::path::PathBuf;
+    use crate::stitcher::stitch;
+
+    #[test]
+    fn should_return_none() {
+        let result = stitch("@pattern", "# Index\n\n@pattern[file]");
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn should_merge() {
+        let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        path.push("resources/test/test-file");
+        let path = path.as_os_str().to_str().unwrap();
+
+        let result = stitch("@pattern", format!("# Index\n\n@pattern[{}]", path).as_str());
+        assert_eq!(result, Some("# Index\n\nA test file.\n".to_string()));
+    }
+
+    #[test]
+    fn should_not_merge_if_no_pattern() {
+        let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        path.push("resources/test/test-file");
+        let path = path.as_os_str().to_str().unwrap();
+
+        let result = stitch(".include", format!("# Index\n\n@pattern[{}]", path).as_str());
+        assert_eq!(result, Some(format!("# Index\n\n@pattern[{}]\n", path)));
+    }
+}
