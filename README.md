@@ -16,16 +16,16 @@ path/to/markdown.md:
 
 ....
 
-@mdstitch[other/path/other.md]
+@mdstitch[relative/path/to/other.md]
 
-@mdstitch[another/path/another.md]
+@mdstitch[another/relative/path/to/another.md]
 
 ## Conclusion
 
 The turtle was very happy!
 ```
 
-other/path/other.md:
+relative/path/to/other.md:
 
 ```
 ## Chapter 1
@@ -34,7 +34,7 @@ A turtle walked slowly in a foggy green wood.
 
 ```
 
-another/path/another.md:
+another/relative/path/to/another.md:
 
 ```
 ## Chapter 2

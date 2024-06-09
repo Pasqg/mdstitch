@@ -23,6 +23,11 @@ fn main() {
     let cli = Cli::parse();
 
     let root_file = cli.root.as_str();
+    let (relative_path, _) = match utils::last_index_of(root_file, '/') {
+        Some(index) => root_file.split_at(index),
+        None => ("", root_file),
+    };
+
     let stitch_pattern = cli.directive.unwrap_or("@mdstitch".to_string());
 
     let index = utils::read_from_file(root_file);
@@ -31,7 +36,7 @@ fn main() {
     }
     let index = index.unwrap();
 
-    let result = stitcher::stitch(stitch_pattern.as_str(), index.as_str());
+    let result = stitcher::stitch(stitch_pattern.as_str(), index.as_str(), relative_path);
     if result.is_none() {
         return;
     }
