@@ -1,6 +1,6 @@
 # mdstitch
 
-A rust util to merge multiple markdown files into one.
+A rust cli util to merge multiple markdown files into one.
 
 ## Stitching markdown files
 

@@ -16,6 +16,9 @@ struct Cli {
 
     #[arg(short, long)]
     directive: Option<String>,
+
+    #[arg(short, long, default_missing_value = "true")]
+    verbose: bool,
 }
 
 fn main() {
@@ -27,6 +30,9 @@ fn main() {
         Some(index) => root_file.split_at(index),
         None => ("", root_file),
     };
+    if cli.verbose {
+        println!("Working dir: {}", relative_path);
+    }
 
     let stitch_pattern = cli.directive.unwrap_or("@mdstitch".to_string());
 
@@ -36,7 +42,7 @@ fn main() {
     }
     let index = index.unwrap();
 
-    let result = stitcher::stitch(stitch_pattern.as_str(), index.as_str(), relative_path);
+    let result = stitcher::stitch(stitch_pattern.as_str(), index.as_str(), relative_path, cli.verbose);
     if result.is_none() {
         return;
     }

@@ -1,6 +1,6 @@
 use crate::utils;
 
-pub(crate) fn stitch(stitch_pattern: &str, index: &str, root_path: &str) -> Option<String> {
+pub(crate) fn stitch(stitch_pattern: &str, index: &str, root_path: &str, verbose: bool) -> Option<String> {
     let mut merged = String::new();
     for line in index.lines() {
         let trimmed_line = line.trim_start();
@@ -20,12 +20,16 @@ pub(crate) fn stitch(stitch_pattern: &str, index: &str, root_path: &str) -> Opti
                 _ => (absolute_path.as_str(), absolute_path_with_file_name.as_str()),
             };
 
+            if verbose {
+                println!("Merging '{}'", absolute_path_with_file_name);
+            }
+
             let content = utils::read_from_file(absolute_path_with_file_name);
             if content.is_none() {
                 return None;
             }
 
-            let content = stitch(stitch_pattern, content.unwrap().as_str(), absolute_path);
+            let content = stitch(stitch_pattern, content.unwrap().as_str(), absolute_path, verbose);
             if content.is_none() {
                 return None;
             }
@@ -47,7 +51,7 @@ mod tests {
 
     #[test]
     fn should_return_none() {
-        let result = stitch("@pattern", "# Index\n\n@pattern[file]", "");
+        let result = stitch("@pattern", "# Index\n\n@pattern[file]", "", false);
         assert_eq!(result, None);
     }
 
@@ -57,7 +61,7 @@ mod tests {
         path.push("resources/test/test-file");
         let path = path.as_os_str().to_str().unwrap();
 
-        let result = stitch("@include", format!("# Index\n\n@include[{}]", path).as_str(), "");
+        let result = stitch("@include", format!("# Index\n\n@include[{}]", path).as_str(), "", false);
         assert_eq!(result, Some("# Index\n\nA test file.\n".to_string()));
     }
 
@@ -67,7 +71,7 @@ mod tests {
         path.push("resources/test/test-file");
         let path = path.as_os_str().to_str().unwrap();
 
-        let result = stitch(".include", format!("# Index\n\n@pattern[{}]", path).as_str(), "");
+        let result = stitch(".include", format!("# Index\n\n@pattern[{}]", path).as_str(), "", false);
         assert_eq!(result, Some(format!("# Index\n\n@pattern[{}]\n", path)));
     }
 }
